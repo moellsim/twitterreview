@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1x6sh6x" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.2.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1x6sh6x" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.3.0">
   <bpmn:collaboration id="Collaboration_1rw4mjy">
     <bpmn:participant id="MitarbeiterParticipant" name="Mitarbeiter" processRef="Process_1ve6m9i" />
     <bpmn:participant id="KommunikationsabteilungParticipant" name="Kommunikationsabteilung" processRef="Process_1rvh7dd" />
@@ -218,13 +218,13 @@
     <bpmn:sequenceFlow id="Flow_0by82jn" sourceRef="TweetEingereichtStartEvent" targetRef="BenutzerinformationenAuslesenTask" />
     <bpmn:sequenceFlow id="Flow_0wyz3jl" sourceRef="Gateway_1fkaqf6" targetRef="PrufergebnisGateway1" />
     <bpmn:sequenceFlow id="AbgelehntSequenceFlow" name="Abgelehnt" sourceRef="PrufergebnisGateway1" targetRef="AblehnungMitteilenTask">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"> ${checkResult == 'rejected'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${checkResult == 'rejected'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="GenehmigtSequenceFlow" name="Genehmigt" sourceRef="PrufergebnisGateway1" targetRef="TweetSendenTask">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${checkResult == 'accepted'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="ZuUberarbeitenSequenceFlow1" name="Zu überarbeiten" sourceRef="PrufergebnisGateway1" targetRef="TweetUberarbeitenTask1">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"> ${checkResult == 'revisable'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${checkResult == 'revisable'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1wcicyu" sourceRef="AblehnungMitteilenTask" targetRef="TweetAbgelehntEndEvent1" />
     <bpmn:sequenceFlow id="Flow_1smgona" sourceRef="TweetSendenTask" targetRef="BestatigungMitteilenTask" />
@@ -232,6 +232,11 @@
     <bpmn:sequenceFlow id="Flow_0m0chuj" sourceRef="Gateway_0rqe009" targetRef="ManuellePrufungErforderlichGateway" />
     <bpmn:sequenceFlow id="Flow_0zq3832" sourceRef="BenutzerinformationenAuslesenTask" targetRef="AufVerboteneWorterPrufenTask" />
     <bpmn:startEvent id="TweetEingereichtStartEvent" name="Tweet eingereicht" camunda:asyncAfter="true">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="tweetContent" label="Gewünschter Tweet-Text" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
       <bpmn:outgoing>Flow_0by82jn</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:scriptTask id="AufVerboteneWorterPrufenTask" name="Auf verbotene Wörter prüfen" scriptFormat="JavaScript">
